@@ -38,23 +38,24 @@ export default function EditPost() {
       data.set('file', files?.[0]);
     }
 
-    fetch('http://localhost:4000/post', {
-      method: 'PUT',
-      body: data,
-      credentials: 'include',
+    axios.put(`http://localhost:4000/api/post/${id}`, data, {
+      withCredentials: true,
     })
-      .then(response => {
-        if (response.ok) {
-          setRedirect(true);
-        }
-      })
-      .catch(error => {
-        console.error('Error updating post:', error);
-      });
-  }
+    .then(response => {
+      if (response.status === 200) {
+        setRedirect(true);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating post:', error);
+      const errorResponse = error.response?.data?.errors || {};
+      const errorArr = Object.values(errorResponse).map(err => err.message);
+      setError(errorArr);
+    });
+  };
 
   if (redirect) {
-    return <Navigate to={'/post/' + id} />;
+    return <Navigate to={`/post/${id}`} />;
   }
 
   return (

@@ -20,10 +20,8 @@ export default function CreatePost() {
     data.set('content', content);
     data.set('file', files[0]);
 
-    fetch('http://localhost:4000/post', {
-      method: 'POST',
-      body: data,
-      credentials: 'include',
+    axios.post('http://localhost:4000/api/post/', data {
+      withCredentials: true,
     })
       .then(response => {
         if (response.ok) {
@@ -32,12 +30,15 @@ export default function CreatePost() {
       })
       .catch(error => {
         console.error('Error creating post:', error);
+        const errorResponse = error.response?.data?.errors || {};
+        const errorArr = Object.values(errorResponse).map(err => err.message);
+        setError(errorArr);
       });
-  }
-
-  if (redirect) {
-    return <Navigate to={'/'} />;
-  }
+    };
+  
+    if (redirect) {
+      return <Navigate to='/' />;
+    }
 
   return (
     <form onSubmit={createNewPost}>

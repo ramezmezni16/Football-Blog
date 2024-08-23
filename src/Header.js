@@ -5,22 +5,28 @@ import {UserContext} from "./UserContext";
 export default function Header() {
   const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch('http://localhost:4000/profile', {
-      credentials: 'include',
-    }).then(response => {
-      response.json().then(userInfo => {
-        setUserInfo(userInfo);
-      });
+    axios.get('http://localhost:4000/profile', {
+      withCredentials: true
+    })
+    .then(response => {
+      setUserInfo(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching profile:', error);
     });
   }, []);
 
-  function logout() {
-    fetch('http://localhost:4000/logout', {
-      credentials: 'include',
-      method: 'POST',
+  const logout = () => {
+    axios.post('http://localhost:4000/logout', {}, {
+      withCredentials: true
+    })
+    .then(() => {
+      setUserInfo(null);
+    })
+    .catch(error => {
+      console.error('Error during logout:', error);
     });
-    setUserInfo(null);
-  }
+  };
 
   const username = userInfo?.username;
 

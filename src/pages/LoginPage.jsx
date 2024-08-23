@@ -11,31 +11,26 @@ export default function LoginPage() {
   function login(ev) {
     ev.preventDefault();
 
-    fetch('http://localhost:4000/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
+    axios.post('http://localhost:4000/api/login', { username, password }, {
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      withCredentials: true
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          alert('wrong credentials');
-          throw new Error('Login failed');
-        }
-      })
-      .then(userInfo => {
-        setUserInfo(userInfo);
+    .then(response => {
+      if (response.status === 200) {
+        setUserInfo(response.data);
         setRedirect(true);
-      })
-      .catch(error => {
-        console.error('Error during login:', error);
-      });
-  }
+      } else {
+        throw new Error('Login failed');
+      }
+    })
+    .catch(error => {
+      console.error('Error during login:', error);
+      setError('Wrong credentials');
+    });
+  };
 
   if (redirect) {
-    return <Navigate to={'/'} />;
+    return <Navigate to='/' />;
   }
 
   return (

@@ -7,23 +7,22 @@ export default function RegisterPage() {
   function register(ev) {
     ev.preventDefault();
 
-    fetch('http://localhost:4000/register', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-      headers: { 'Content-Type': 'application/json' },
-    })
+    axios.post('http://localhost:4000/api/register', { username, password }, {
+        headers: { 'Content-Type': 'application/json' }
+      })
       .then(response => {
         if (response.status === 200) {
-          alert('registration successful');
+          alert('Registration successful');
         } else {
-          alert('registration failed');
+          throw new Error('Registration failed');
         }
       })
       .catch(error => {
         console.error('Error during registration:', error);
-        alert('registration failed');
+        alert('Registration failed');
+        setError('Registration failed');
       });
-  }
+    };
 
   return (
     <form className="register" onSubmit={register}>
