@@ -1,6 +1,8 @@
 import {Link} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "./UserContext";
+import axios from 'axios';
+
 
 export default function Header() {
   const {setUserInfo,userInfo} = useContext(UserContext);

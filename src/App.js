@@ -2,7 +2,7 @@ import './App.css';
 import Post from "./Post";
 import Header from "./Header";
 import {Route, Routes} from "react-router-dom";
-import Layout from "./Layout";
+import Layout from "./Layouts.js";
 import IndexPage from "./pages/IndexPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage.jsx";
