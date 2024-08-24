@@ -1,22 +1,13 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const connectDB = require('./config/mongoose.config');
-const authRoutes = require('./routes/authRoutes');
-const postRoutes = require('./routes/postRoutes');
-
+const cors = require('cors')
 const app = express();
-connectDB();
+require('dotenv').config();
+const port = process.env.PORT;
+    
+app.use(express.json(), express.urlencoded({extended:true }), cors());
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-app.use(express.json());
-app.use(cookieParser());
-app.use('/uploads', express.static(__dirname + '/uploads'));
+require('./config/mongoose.config')
+require('./routes/authRoutes')(app);
+require('./routes/postRoutes')(app);
 
-app.use(authRoutes);
-app.use(postRoutes);
-
-app.listen(4000, () => {
-  console.log('Server is running on port 4000');
-});
+app.listen(port, () => console.log(`Listening on port: ${port}`) );

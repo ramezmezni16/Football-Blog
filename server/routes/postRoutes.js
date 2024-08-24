@@ -1,11 +1,11 @@
 const express = require('express');
 const { createPost, updatePost, getPosts, getPostById } = require('../controllers/postController');
-const uploadMiddleware = require('../middleware/uploadMiddleware');
 
 const router = express.Router();
 
-router.post('/post', uploadMiddleware.single('file'), createPost);
-router.put('/post', uploadMiddleware.single('file'), updatePost);
+// Routes without middleware for file uploads
+router.post('/post', createPost);
+router.put('/post', updatePost);
 router.get('/post', getPosts);
 router.get('/post/:id', getPostById);
 

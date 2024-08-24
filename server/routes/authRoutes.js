@@ -3,6 +3,7 @@ const { register, login, profile, logout } = require('../controllers/authControl
 
 const router = express.Router();
 
+// Authentication routes without middleware
 router.post('/register', register);
 router.post('/login', login);
 router.get('/profile', profile);
